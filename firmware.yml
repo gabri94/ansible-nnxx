@@ -56,6 +56,7 @@
         - kmod-usb-storage
         - kmod-usb-storage-extras
         - kmod-ipip
+        - prince
         # olsrd1 specifc, used by Palermo
         - olsrd
         - olsrd-mod-nameservice
@@ -77,6 +78,7 @@
         # olsrd2
         - CONFIG_OONF_NHDP_AUTOLL4=y
         - CONFIG_OONF_OLSRV2_LAN_IMPORT=y
+        - CONFIG_OONF_GENERIC_REMOTECONTROL=y
         # workaround to avoid conflicts between wpad and wpad-mini
         - "# CONFIG_PACKAGE_wpad-mini is not set"
     # packages passed to "PACKAGES" flag of image builder (in the image building step)
