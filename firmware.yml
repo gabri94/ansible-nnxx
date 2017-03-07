@@ -3,18 +3,17 @@
     - openwisp.openwisp2-imagegenerator
   vars:
     basedir: /home/jenkins/workspace/nnxx-firmware
-    openwisp2fw_ssl_lib: mbedtls
+    openwisp2fw_ssl_lib: openssl
     openwisp2fw_source_dir: "{{ basedir }}/source"
     openwisp2fw_generator_dir: "{{ basedir }}/generator"
     openwisp2fw_bin_dir: /var/www/downloads.openwisp.org/nnxx-firmware/
     openwisp2fw_source_version: lede-17.01
     openwisp2fw_source_archs:
         - ar71xx
-        - x86
     openwisp2fw_source_feeds:
         - method: src-git
           name: packages
-          location: https://github.com/openwrt/packages.git
+          location: https://github.com/gabri94/packages-2.git
           branch: lede-17.01
         - method: src-git
           name: luci
@@ -28,134 +27,12 @@
           name: routing
           location: https://github.com/openwrt-routing/packages.git
           branch: lede-17.01
-        - method: src-git
-          name: openwisp
-          location: https://github.com/openwisp/openwisp-config.git
-          branch: master
-        - method: src-git
-          name: luciopenwisp
-          location: https://github.com/openwisp/luci-openwisp.git
-          branch: master
-    # packages compiled during compilation step
-    openwisp2fw_source_additional_packages:
-        - wpad
-        - iputils-ping
-        - ip-full
-        - wget
-        - partx-utils
-        - oonf-olsrd2
-        - luci
-        - luci-ssl
-        - iputils-ping
-        - ip-full
-        - iwinfo
-        - iperf3
-        - ipip
-        - kmod-fs-ext4
-        - kmod-fs-vfat
-        - kmod-usb-storage
-        - kmod-usb-storage-extras
-        - kmod-ipip
-        - prince
-        # olsrd1 specifc, used by Palermo
-        - olsrd
-        - olsrd-mod-nameservice
-        - olsrd-mod-arprefresh
-        - olsrd-mod-dyn-gw
-        - olsrd-mod-txtinfo
-        - olsrd-mod-jsoninfo
-        - luci-lib-json
-        - luci-app-olsr
-    # other OpenWRT/LEDE configurations
-    openwisp2fw_source_other_configs:
-        # busybox
-        - CONFIG_BUSYBOX_CUSTOM=y
-        - CONFIG_BUSYBOX_CONFIG_FEATURE_EDITING_SAVEHISTORY=y
-        - CONFIG_BUSYBOX_CONFIG_FEATURE_EDITING_SAVE_ON_EXIT=y
-        - CONFIG_BUSYBOX_CONFIG_FEATURE_REVERSE_SEARCH=y
-        - CONFIG_BUSYBOX_CONFIG_FEATURE_VI_UNDO=y
-        - CONFIG_BUSYBOX_CONFIG_WATCH=y
-        # olsrd2
-        - CONFIG_OONF_NHDP_AUTOLL4=y
-        - CONFIG_OONF_OLSRV2_LAN_IMPORT=y
-        - CONFIG_OONF_GENERIC_REMOTECONTROL=y
-        # workaround to avoid conflicts between wpad and wpad-mini
-        - "# CONFIG_PACKAGE_wpad-mini is not set"
-    # packages passed to "PACKAGES" flag of image builder (in the image building step)
-    openwisp2fw_default_packages:
-        - -ppp
-        - -ppp-mod-pppoe
-        - -wpad-mini
-        - wpad
-        - uhttpd
-        - uhttpd-mod-ubus
-        - openvpn-{{ openwisp2fw_ssl_lib }}
-        - openwisp-config-{{ openwisp2fw_ssl_lib }}
-    # packages used in the full flavour
-    nnxx_full_packages:
-        - iputils-ping
-        - ip-full
-        - wget
-        - partx-utils
-        - iputils-ping
-        - ip-full
-        - iwinfo
-        - iperf3
-        - ipip
-        - kmod-fs-ext4
-        - kmod-fs-vfat
-        - kmod-usb-storage
-        - kmod-usb-storage-extras
-        - kmod-ipip
-        - libustream-{{ openwisp2fw_ssl_lib }}
-        - px5g
-        - luci-ssl
-    # packages used in the nossl flavour
-    nnxx_nossl_packages:
-        - luci
-    olsrd2_packages:
-        - oonf-olsrd2
-        - prince
-    olsrd1_packages:
-        - olsrd
-        - olsrd-mod-nameservice
-        - olsrd-mod-arprefresh
-        - olsrd-mod-dyn-gw
-        - olsrd-mod-txtinfo
-        - olsrd-mod-jsoninfo
-        - luci-lib-json
-        - luci-app-olsr
-    # definition of available flavours
-    openwisp2fw_image_flavours:
-        full_olsrd2:
-          ar71xx:
-            profile: Default
-            packages: "{{ openwisp2fw_default_packages + nnxx_full_packages + olsrd2_packages }}"
-          x86:
-            profile: Generic
-            packages: "{{ openwisp2fw_default_packages + nnxx_full_packages + olsrd2_packages }}"
-        full_olsrd1:
-          ar71xx:
-            profile: Default
-            packages: "{{ openwisp2fw_default_packages + nnxx_full_packages + olsrd1_packages + olsrd2_packages }}"
-          x86:
-            profile: Generic
-            packages: "{{ openwisp2fw_default_packages + nnxx_full_packages + olsrd1_packages + olsrd2_packages }}"
-        nossl_olsrd1:
-          ar71xx:
-            profile: Default
-            packages: "{{ openwisp2fw_default_packages + nnxx_nossl_packages + olsrd1_packages + olsrd2_packages }}"
-          x86:
-            profile: Generic
-            packages: "{{ openwisp2fw_default_packages + nnxx_nossl_packages + olsrd1_packages + olsrd2_packages }}"
-    # definition of organizations
-    default_openwisp2_url: https://openwisp.firenze.ninux.org
     openwisp2fw_organizations:
         - name: firenze
           flavours:
             - full_olsrd2
           openwisp:
-            url: "{{ default_openwisp2_url }}"
+            url: "10.150.22.22 "
             shared_secret: Secretn1nuxFlo1932
             unmanaged: "{{ openwisp2fw_default_unmanaged }}"
             verify_ssl: 0
